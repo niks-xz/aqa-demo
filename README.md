@@ -1,6 +1,6 @@
 # Автотесты на Playwright
 
-Автотесты на Playwright для демонстрационного проекта [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/).
+Автотесты на Playwright для демонстрационного проекта [OWASP Juice Shop](https://juice-shop.herokuapp.com).
 
 ## Структура
 
