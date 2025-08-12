@@ -6,10 +6,10 @@ dotenv.config();
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  forbidOnly: !!process.env.IS_CI_ENVIRONMENT,
-  retries: process.env.PW_RETRIES ? 3 : 0,
-  workers: process.env.PW_WORKERS ? 4 : undefined,
   reporter: [['html', { open: 'never' }], ['list']],
+  forbidOnly: !!process.env.IS_CI_ENVIRONMENT,
+  retries: process.env.PW_RETRIES ? Number(process.env.PW_RETRIES) : 0,
+  workers: process.env.PW_WORKERS ? Number(process.env.PW_WORKERS) : undefined,
   timeout: process.env.PW_TIMEOUT ? Number(process.env.PW_TIMEOUT) : 30000,
   expect: {
     timeout: process.env.PW_EXPECT_TIMEOUT ? Number(process.env.PW_EXPECT_TIMEOUT) : 50000,
