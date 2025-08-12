@@ -1,29 +1,52 @@
 import { expect, Locator, Page, Response } from "@playwright/test";
 import { User } from "@models/user.model";
+import { ValidationError, ValidationErrorResponse } from "@models/validationErrorResponse.model";
 
 export class RegisterPage {
     private readonly page: Page;
-    private readonly headLocator: Locator;
-    private readonly emailInput: Locator;
-    private readonly passwordInput: Locator;
-    private readonly confirmPasswordInput: Locator;
-    private readonly secretQuestionSelect: Locator;
-    private readonly secretQuestionOption: Locator;
-    private readonly secretAnswerInput: Locator;
-    private readonly registerButton: Locator;
-    private res!: Promise<Response>;
+
+    private get headLocator(): Locator {
+        return this.page.getByRole('heading', { level: 1 });
+    }
+
+    private get emailInput(): Locator {
+        return this.page.getByRole('textbox', { name: 'Email address field' });
+    }
+
+    private get passwordInput(): Locator {
+        return this.page.getByRole('textbox', { name: 'Field for the password' });
+    }
+
+    private get confirmPasswordInput(): Locator {
+        return this.page.getByRole('textbox', { name: 'Field to confirm the password' });
+    }
+
+    private get secretQuestionSelect(): Locator {
+        return this.page.getByRole('combobox', { name: 'Selection list for the security question' }).locator('../..');
+    }
+
+    private get secretQuestionOption(): Locator {
+        return this.page.getByRole('option', { name: 'Your eldest siblings middle' });
+    }
+
+    private get secretAnswerInput(): Locator {
+        return this.page.getByRole('textbox', { name: 'Field for the answer to the' });
+    }
+
+    private get registerButton(): Locator {
+        return this.page.getByRole('button', { name: 'Button to complete the' });
+    }
+
+    private get registerSuccessMessage(): Locator {
+        return this.page.getByText('Регистрация успешно завершена. Теперь вы можете войти.');
+    }
+
+    private get emailUniquenessError(): Locator {
+        return this.page.getByText('Email must be unique');
+    }
 
     constructor(page: Page) {
         this.page = page;
-
-        this.headLocator = page.getByRole('heading', { level: 1 });
-        this.emailInput = page.getByRole('textbox', { name: 'Email address field' });
-        this.passwordInput = page.getByRole('textbox', { name: 'Field for the password' });
-        this.confirmPasswordInput = page.getByRole('textbox', { name: 'Field to confirm the password' });
-        this.secretQuestionSelect = page.getByRole('combobox', { name: 'Selection list for the security question' }).locator('../..');
-        this.secretQuestionOption = page.getByRole('option', { name: 'Your eldest siblings middle' });
-        this.secretAnswerInput = page.getByRole('textbox', { name: 'Field for the answer to the' });
-        this.registerButton = page.getByRole('button', { name: 'Button to complete the' });
     }
 
     private async go() {
@@ -53,17 +76,27 @@ export class RegisterPage {
         await this.registerButton.click();
     }
 
-    async register(user: User) {
+    async register(user: User): Promise<Response> {
         await this.go();
         await this.checkHeadText();
         await this.fillForm(user);
-        this.res = this.waitForApiResponse();
+        const response = this.waitForApiResponse();
         await this.clickRegisterButton();
+        return response;
     }
 
-    async checkRegisterSuccess() {
-        expect((await this.res).ok()).toBe(true);
+    async checkRegisterSuccess(response: Promise<Response>) {
+        expect((await response).ok()).toBe(true);
 
-        await expect(this.page.getByText('Регистрация успешно завершена. Теперь вы можете войти.')).toBeVisible();
+        await expect(this.registerSuccessMessage).toBeVisible();
+    }
+
+    async checkEmailUniquenessError(response: Promise<Response>) {
+        const body: ValidationErrorResponse = await (await response).json();
+
+        expect((await response).status()).toBe(400);
+        expect(body.errors.some((error: ValidationError) => error.message === 'email must be unique')).toBe(true);
+
+        await expect(this.emailUniquenessError).toBeVisible();
     }
 }
