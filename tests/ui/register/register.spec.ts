@@ -40,7 +40,29 @@ test.describe('Регистрация', () => {
     })
 
     await test.step('Проверка', async () => {
-      await registerPage.checkEmailUniquenessError(response);
+      await registerPage.checkRegisterUniquenessEmailError(response);
+    })
+  })
+
+  test('Регистрация c невалидным email', async ({ page, userHelpers }, testInfo) => {
+    test.fail(true, 'Известный баг. Регистрация с невалидным email проходит успешно.');
+    testInfo.annotations.push({ type: 'bug', description: '{номер задачи в трекере}' });
+
+    let registerPage: RegisterPage;
+    let user: User;
+    let response: Promise<Response>;
+
+    await test.step('Подготовка', () => {
+      registerPage = new RegisterPage(page);
+      user = userHelpers.getUserWithTrack(userHelpers.getInvalidStaticUser);
+    })
+
+    await test.step('Действие', () => {
+      response = registerPage.register(user);
+    })
+
+    await test.step('Проверка', async () => {
+      await registerPage.checkRegisterInvalidEmailError(response);
     })
   })
 })

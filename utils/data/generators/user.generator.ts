@@ -7,6 +7,13 @@ export function getStaticUser(): User {
     }
 }
 
+export function getInvalidStaticUser(): User {
+    return {
+        email: 'invalid@user',
+        password: 'qwe123QWE!@#',
+    }
+}
+
 export function getExistingUser(): User {
     return {
         email: 'existing@user.ru',
