@@ -91,12 +91,18 @@ export class RegisterPage {
         await expect(this.registerSuccessMessage).toBeVisible();
     }
 
-    async checkEmailUniquenessError(response: Promise<Response>) {
-        const body: ValidationErrorResponse = await (await response).json();
+    async checkRegisterUniquenessEmailError(response: Promise<Response>) {
+        const res = await response;
+        const body: ValidationErrorResponse = await res.json();
 
-        expect((await response).status()).toBe(400);
+        expect(res.status()).toBe(400);
         expect(body.errors.some((error: ValidationError) => error.message === 'email must be unique')).toBe(true);
 
         await expect(this.emailUniquenessError).toBeVisible();
+    }
+
+    async checkRegisterInvalidEmailError(response: Promise<Response>) {
+        expect((await response).status()).toBeGreaterThanOrEqual(400);
+        await expect(this.page.waitForURL('**/login', { timeout: 5000, waitUntil: 'commit' })).rejects.toThrow();
     }
 }
