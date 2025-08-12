@@ -1,0 +1,69 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@tests/*": [
+                "tests/*"
+            ],
+            "@utils/*": [
+                "utils/*"
+            ],
+            "@pages/*": [
+                "pages/*"
+            ],
+            "@models/*": [
+                "models/*"
+            ],
+            "@fixtures/*": [
+                "fixtures/*"
+            ],
+            "@hooks/*": [
+                "hooks/*"
+            ],
+            "@config/*": [
+                "config/*"
+            ],
+            "@data/*": [
+                "data/*"
+            ]
+        },
+        "strict": true,
+        "noImplicitAny": false,
+        "useUnknownInCatchVariables": false,
+        "noPropertyAccessFromIndexSignature": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "types": [
+            "node"
+        ]
+    },
+    "include": [
+        "tests/**/*.ts",
+        "utils/**/*.ts",
+        "fixtures/**/*.ts",
+        "hooks/**/*.ts",
+        "models/**/*.ts",
+        "pages/**/*.ts",
+        "config/**/*.ts",
+        "data/**/*.ts",
+        "playwright.config.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "playwright-report",
+        "test-results"
+    ]
+}
