@@ -54,7 +54,7 @@ test.describe('Регистрация', () => {
 
     await test.step('Подготовка', () => {
       registerPage = new RegisterPage(page);
-      user = userHelpers.getUserWithTrack(userHelpers.getInvalidStaticUser);
+      user = userHelpers.getUserWithTrack(userHelpers.getInvalidEmailStaticUser);
     })
 
     await test.step('Действие', () => {
@@ -63,6 +63,24 @@ test.describe('Регистрация', () => {
 
     await test.step('Проверка', async () => {
       await registerPage.checkRegisterInvalidEmailError(response);
+    })
+  })
+
+  test('Регистрация c невалидным повтором пароля', async ({ page, userHelpers }) => {
+    let registerPage: RegisterPage;
+    let user: User;
+
+    await test.step('Подготовка', () => {
+      registerPage = new RegisterPage(page);
+      user = userHelpers.getInvalidRepeatPasswordStaticUser();
+    })
+
+    await test.step('Действие', async () => {
+      await registerPage.registerFillFormOnly(user);
+    })
+
+    await test.step('Проверка', async () => {
+      await registerPage.checkRegisterInvalidRepeatPasswordError();
     })
   })
 })
