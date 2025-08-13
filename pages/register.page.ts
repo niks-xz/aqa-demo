@@ -17,7 +17,7 @@ export class RegisterPage {
         return this.page.getByRole('textbox', { name: 'Field for the password' });
     }
 
-    private get confirmPasswordInput(): Locator {
+    private get repeatPasswordInput(): Locator {
         return this.page.getByRole('textbox', { name: 'Field to confirm the password' });
     }
 
@@ -45,6 +45,10 @@ export class RegisterPage {
         return this.page.getByText('Email must be unique');
     }
 
+    private get repeatPasswordError(): Locator {
+        return this.page.getByText('Пароли не совпадают');
+    }
+
     constructor(page: Page) {
         this.page = page;
     }
@@ -60,7 +64,7 @@ export class RegisterPage {
     private async fillForm(user: User) {
         await this.emailInput.fill(user.email);
         await this.passwordInput.fill(user.password);
-        await this.confirmPasswordInput.fill(user.password);
+        await this.repeatPasswordInput.fill(user.repeatPassword ? user.repeatPassword : user.password);
         await this.secretQuestionSelect.click();
         await this.secretQuestionOption.click();
         await this.secretAnswerInput.fill('Test Answer');
@@ -85,6 +89,12 @@ export class RegisterPage {
         return response;
     }
 
+    async registerFillFormOnly(user: User): Promise<void> {
+        await this.go();
+        await this.checkHeadText()
+        await this.fillForm(user);
+    }
+
     async checkRegisterSuccess(response: Promise<Response>) {
         expect((await response).ok()).toBe(true);
 
@@ -104,5 +114,10 @@ export class RegisterPage {
     async checkRegisterInvalidEmailError(response: Promise<Response>) {
         expect((await response).status()).toBeGreaterThanOrEqual(400);
         await expect(this.page.waitForURL('**/login', { timeout: 5000, waitUntil: 'commit' })).rejects.toThrow();
+    }
+
+    async checkRegisterInvalidRepeatPasswordError() {
+        await expect(this.repeatPasswordError).toBeVisible();
+        await expect(this.registerButton).toBeDisabled();
     }
 }

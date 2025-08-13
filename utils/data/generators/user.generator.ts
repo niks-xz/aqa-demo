@@ -7,10 +7,18 @@ export function getStaticUser(): User {
     }
 }
 
-export function getInvalidStaticUser(): User {
+export function getInvalidEmailStaticUser(): User {
     return {
         email: 'invalid@user',
         password: 'qwe123QWE!@#',
+    }
+}
+
+export function getInvalidRepeatPasswordStaticUser(): User {
+    return {
+        email: 'invalidrepeatpasswordstatic@user.ru',
+        password: 'qwe123QWE!@#',
+        repeatPassword: 'qwe123QWE!@##',
     }
 }
 

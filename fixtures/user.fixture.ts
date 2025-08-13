@@ -1,5 +1,5 @@
 import { test as baseTest } from '@playwright/test';
-import { getExistingUser, getInvalidStaticUser, getStaticUser, getUniqueUser } from '@utils/data/generators/user.generator';
+import { getExistingUser, getInvalidEmailStaticUser, getStaticUser, getUniqueUser, getInvalidRepeatPasswordStaticUser } from '@utils/data/generators/user.generator';
 import { User } from '@models/user.model';
 import { deleteUserByEmail } from '@utils/api/user.api';
 
@@ -9,7 +9,8 @@ interface UserFixture {
 
 interface UserHelpers {
     getStaticUser: () => User;
-    getInvalidStaticUser: () => User;
+    getInvalidEmailStaticUser: () => User;
+    getInvalidRepeatPasswordStaticUser: () => User;
     getExistingUser: () => User;
     getUniqueUser: () => User;
     getUserWithTrack: (getUserFunc: () => User) => User;
@@ -22,7 +23,8 @@ export function registerUserFixture(test: typeof baseTest) {
             const userHelpers: UserHelpers = {
                 users: [],
                 getStaticUser,
-                getInvalidStaticUser,
+                getInvalidEmailStaticUser,
+                getInvalidRepeatPasswordStaticUser,
                 getExistingUser,
                 getUniqueUser,
                 getUserWithTrack: (getUserFunc: () => User) => {
