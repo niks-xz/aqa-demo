@@ -66,6 +66,7 @@ export class RegisterPage {
         await this.passwordInput.fill(user.password);
         await this.repeatPasswordInput.fill(user.repeatPassword ? user.repeatPassword : user.password);
         await this.secretQuestionSelect.click();
+        await expect(this.secretQuestionOption).toBeVisible();
         await this.secretQuestionOption.click();
         await this.secretAnswerInput.fill('Test Answer');
     }
