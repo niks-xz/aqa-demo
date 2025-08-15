@@ -14,6 +14,14 @@ export function getInvalidEmailStaticUser(): User {
     }
 }
 
+export function getWrongPasswordStaticUser(): User {
+    return {
+        email: 'static@user.ru',
+        password: 'qwe123QWE!@#',
+        repeatPassword: 'qwe123QWE!@##',
+    }
+}
+
 export function getInvalidRepeatPasswordStaticUser(): User {
     return {
         email: 'invalidrepeatpasswordstatic@user.ru',
