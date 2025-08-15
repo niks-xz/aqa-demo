@@ -1,7 +1,7 @@
-import { test as baseTest } from '@playwright/test';
-import { getExistingUser, getInvalidEmailStaticUser, getStaticUser, getUniqueUser, getInvalidRepeatPasswordStaticUser } from '@utils/data/generators/user.generator';
 import { User } from '@models/user.model';
+import { test as baseTest } from '@playwright/test';
 import { deleteUserByEmail } from '@utils/api/user.api';
+import { getExistingUser, getInvalidEmailStaticUser, getInvalidRepeatPasswordStaticUser, getStaticUser, getUniqueUser, getWrongPasswordStaticUser } from '@utils/data/generators/user.generator';
 
 interface UserFixture {
     userHelpers: UserHelpers
@@ -10,6 +10,7 @@ interface UserFixture {
 interface UserHelpers {
     getStaticUser: () => User;
     getInvalidEmailStaticUser: () => User;
+    getWrongPasswordStaticUser: () => User;
     getInvalidRepeatPasswordStaticUser: () => User;
     getExistingUser: () => User;
     getUniqueUser: () => User;
@@ -24,6 +25,7 @@ export function registerUserFixture(test: typeof baseTest) {
                 users: [],
                 getStaticUser,
                 getInvalidEmailStaticUser,
+                getWrongPasswordStaticUser,
                 getInvalidRepeatPasswordStaticUser,
                 getExistingUser,
                 getUniqueUser,

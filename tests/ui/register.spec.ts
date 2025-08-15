@@ -1,7 +1,7 @@
-import { test as baseTest, Response } from "@playwright/test"
 import { registerUserFixture } from '@fixtures/user.fixture';
-import { RegisterPage } from '@pages/register.page';
 import { User } from "@models/user.model";
+import { RegisterPage } from '@pages/register.page';
+import { test as baseTest, Response } from "@playwright/test";
 
 const test = registerUserFixture(baseTest);
 
