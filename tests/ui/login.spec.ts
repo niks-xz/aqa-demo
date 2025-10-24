@@ -6,7 +6,7 @@ import { test as baseTest, Response } from '@playwright/test';
 const test = registerUserFixture(baseTest)
 
 test.describe('Вход', () => {
-    test('Успешный вход', async ({ page, userHelpers }) => {
+    test('Успешный вход', { tag: ['@critical', '@positive'] }, async ({ page, userHelpers }) => {
         let loginPage: LoginPage;
         let user: User;
         let response: Promise<Response>;
@@ -25,7 +25,7 @@ test.describe('Вход', () => {
         })
     })
 
-    test('Неверный пароль', async ({ page, userHelpers }) => {
+    test('Неверный пароль', { tag: '@negative' }, async ({ page, userHelpers }) => {
         let loginPage: LoginPage;
         let user: User;
         let response: Promise<Response>;

@@ -6,7 +6,7 @@ dotenv.config();
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
-  reporter: [['html', { open: 'never' }], ['list']],
+  reporter: [['list'], ['allure-playwright', { open: 'never' }]],
   forbidOnly: !!process.env.IS_CI_ENVIRONMENT,
   retries: process.env.PW_RETRIES ? Number(process.env.PW_RETRIES) : 0,
   workers: process.env.PW_WORKERS ? Number(process.env.PW_WORKERS) : undefined,

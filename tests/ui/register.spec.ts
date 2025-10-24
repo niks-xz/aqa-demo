@@ -6,7 +6,7 @@ import { test as baseTest, Response } from "@playwright/test";
 const test = registerUserFixture(baseTest);
 
 test.describe('Регистрация', () => {
-  test('Успешная регистрация', async ({ page, userHelpers }) => {
+  test('Успешная регистрация', { tag: ['@critical', '@positive', '@flaky'] }, async ({ page, userHelpers }) => {
     let registerPage: RegisterPage;
     let user: User;
     let response: Promise<Response>;
@@ -25,7 +25,7 @@ test.describe('Регистрация', () => {
     })
   });
 
-  test('Регистрация существующего пользователя', async ({ page, userHelpers }) => {
+  test('Регистрация существующего пользователя', { tag: ['@negative', '@flaky'] }, async ({ page, userHelpers }) => {
     let registerPage: RegisterPage;
     let user: User;
     let response: Promise<Response>;
@@ -44,7 +44,7 @@ test.describe('Регистрация', () => {
     })
   })
 
-  test('Регистрация c невалидным email', async ({ page, userHelpers }, testInfo) => {
+  test('Регистрация c невалидным email', { tag: ['@negative', '@fail'] }, async ({ page, userHelpers }, testInfo) => {
     test.fail(true, 'Известный баг. Регистрация с невалидным email проходит успешно.');
     testInfo.annotations.push({ type: 'bug', description: '{номер задачи в трекере}' });
 
@@ -66,7 +66,7 @@ test.describe('Регистрация', () => {
     })
   })
 
-  test('Регистрация c невалидным повтором пароля', async ({ page, userHelpers }) => {
+  test('Регистрация c невалидным повтором пароля', { tag: '@negative' }, async ({ page, userHelpers }) => {
     let registerPage: RegisterPage;
     let user: User;
 
