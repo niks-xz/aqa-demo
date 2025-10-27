@@ -1,8 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
-// test mirroring github&gitlab retry
-
 dotenv.config();
 
 export default defineConfig({
