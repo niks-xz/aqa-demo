@@ -1,4 +1,4 @@
-image: mcr.microsoft.com/playwright:v1.54.2-focal
+image: mcr.microsoft.com/playwright:v1.50.0-noble
 
 stages:
   - install
