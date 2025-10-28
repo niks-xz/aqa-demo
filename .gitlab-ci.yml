@@ -40,8 +40,6 @@ install_dependencies:
     paths:
       - node_modules/
     expire_in: 1 hour
-  dependencies:
-    - prepare_app_for_testing
 
 run_tests:
   stage: test
@@ -55,5 +53,4 @@ run_tests:
       - playwright-report/
     expire_in: 1 hour
   dependencies:
-    - prepare_app_for_testing
     - install_dependencies
