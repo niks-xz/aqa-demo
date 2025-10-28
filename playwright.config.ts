@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
+// test ci/cd
+
 dotenv.config();
 
 export default defineConfig({
