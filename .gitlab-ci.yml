@@ -34,7 +34,9 @@ prepare_app_for_testing:
     - git clone https://github.com/niks-xz/my-juice-shop.git /tmp/juice-shop
     - cd /tmp/juice-shop
     - npm install
-    - npm run start && echo "App is running on $APP_BASE_URL"
+    - npm run start &
+    - sleep 10
+    - echo "App is running on $APP_BASE_URL"
 
 install_dependencies:
   stage: install
