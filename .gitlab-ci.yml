@@ -6,7 +6,6 @@ workflow:
     - if: $CI_COMMIT_BRANCH == "dev"
 
 stages:
-  - prepare
   - install
   - test
 
@@ -26,21 +25,16 @@ cache:
       - /tmp/juice-shop/node_modules/
     policy: pull-push
 
-prepare_app_for_testing:
-  stage: prepare
-  image: node:22
+install_dependencies:
+  stage: install
   script:
     - echo "Start preparing app for testing..."
     - git clone https://github.com/niks-xz/my-juice-shop.git /tmp/juice-shop
     - cd /tmp/juice-shop
     - npm install
     - npm run start &
-    - sleep 10
-    - echo "App is running on $APP_BASE_URL"
-
-install_dependencies:
-  stage: install
-  script:
+    - echo "Installing dependencies for testing..."
+    - cd $CI_PROJECT_DIR
     - npm ci
   artifacts:
     paths:
