@@ -1,16 +1,42 @@
 image: mcr.microsoft.com/playwright:v1.54.2-noble
 
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "dev"
+
 stages:
+  - prepare
   - install
   - test
 
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  APP_BASE_URL: "http://localhost:3000"
+  API_BASE_URL: "http://localhost:3000"
 
 cache:
-  paths:
-    - .npm/
-    - node_modules/
+  - key: "test-deps-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .npm/
+      - node_modules/
+    policy: pull-push
+    expire_in: "1 hour"
+  - key: "juice-shop-daily-$CI_COMMIT_REF_SLUG"
+    paths:
+      - /tmp/juice-shop/
+    policy: pull-push
+    expire_in: "1 day"
+
+prepare_app_for_testing:
+  stage: prepare
+  image: node:22
+  script:
+    - echo "Start preparing app for testing..."
+    - git clone https://github.com/niks-xz/my-juice-shop.git /tmp/juice-shop
+    - cd /tmp/juice-shop
+    - npm install
+    - npm run start && echo "App is running on $APP_BASE_URL"
 
 install_dependencies:
   stage: install
@@ -20,6 +46,8 @@ install_dependencies:
     paths:
       - node_modules/
     expire_in: 1 hour
+  dependencies:
+    - prepare_app_for_testing
 
 run_tests:
   stage: test
@@ -33,4 +61,5 @@ run_tests:
       - playwright-report/
     expire_in: 1 hour
   dependencies:
+    - prepare_app_for_testing
     - install_dependencies
