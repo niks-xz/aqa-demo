@@ -1,0 +1,36 @@
+image: mcr.microsoft.com/playwright:v1.40.0-focal
+
+stages:
+  - install
+  - test
+
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+cache:
+  paths:
+    - .npm/
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+
+run_tests:
+  stage: test
+  script:
+    - npm run test
+  artifacts:
+    when: always
+    paths:
+      - allure-results/
+      - test-results/
+      - playwright-report/
+    expire_in: 1 hour
+  dependencies:
+    - install_dependencies
