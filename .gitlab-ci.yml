@@ -21,12 +21,10 @@ cache:
       - .npm/
       - node_modules/
     policy: pull-push
-    expire_in: "1 hour"
-  - key: "juice-shop-daily-$CI_COMMIT_REF_SLUG"
+  - key: "app-$CI_COMMIT_REF_SLUG"
     paths:
-      - /tmp/juice-shop/
+      - /tmp/juice-shop/node_modules/
     policy: pull-push
-    expire_in: "1 day"
 
 prepare_app_for_testing:
   stage: prepare
