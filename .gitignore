@@ -5,4 +5,4 @@ node_modules/
 /playwright/.cache/
 .env
 allure-results/
-.gitlab-ci.yml
+./gitlab-cache.yml
